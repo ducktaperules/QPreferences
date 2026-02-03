@@ -18,34 +18,42 @@ namespace QPreferences {
 using ValueVariant = std::variant<int, int32_t, float, bool, String>;
 
 /**
- * @brief Cache entry for a single preference with three-state tracking.
+ * @brief Cache entry for a single preference with four-state tracking.
  *
  * Each cache entry stores:
  * - value: Current cached value (in RAM)
- * - nvs_value: Last-known NVS value (empty = never loaded from NVS)
- * - dirty: Flag indicating if RAM value differs from NVS
+ * - nvs_value: Last-known NVS value (empty = no value stored in NVS)
+ * - initialized: Whether we've attempted to load from NVS (controls lazy loading)
+ * - dirty: Flag indicating if RAM value differs from NVS baseline
+ *
+ * Key distinction:
+ * - initialized tracks "have we tried to load this?" (lazy loading gate)
+ * - nvs_value.has_value() tracks "does NVS actually have a stored value?"
  *
  * This enables:
  * - Lazy initialization (load from NVS only on first access)
- * - Dirty tracking (know which values need to be saved)
- * - Modified tracking (know which values differ from defaults)
+ * - Smart dirty tracking (compare against NVS value or default appropriately)
+ * - Read-only NVS access (don't create namespaces unnecessarily)
  */
 struct CacheEntry {
     /// Current cached value (in RAM)
     ValueVariant value;
 
-    /// Last-known NVS value (empty = never loaded from NVS)
+    /// Last-known NVS value (empty = no value stored in NVS)
     std::optional<ValueVariant> nvs_value;
 
-    /// Flag indicating if RAM value differs from NVS
+    /// Whether this entry has been initialized (attempted load from NVS)
+    bool initialized = false;
+
+    /// Flag indicating if RAM value differs from NVS baseline
     bool dirty = false;
 
     /**
      * @brief Check if this entry has been initialized from NVS.
-     * @return true if nvs_value has been loaded, false otherwise
+     * @return true if initialization has been attempted, false otherwise
      */
     bool is_initialized() const {
-        return nvs_value.has_value();
+        return initialized;
     }
 
     /**
