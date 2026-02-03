@@ -12,7 +12,7 @@ QPreferences delivers a type-safe ESP32 preferences library through four focused
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation & Type Safety** - Template infrastructure and registry
+- [x] **Phase 1: Foundation & Type Safety** - Template infrastructure and registry
 - [ ] **Phase 2: RAM Cache & Dirty Tracking** - Memory-first change tracking
 - [ ] **Phase 3: Smart Persistence** - Optimized NVS storage with batching
 - [ ] **Phase 4: Iteration & Examples** - Enumeration and documentation
@@ -32,8 +32,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Core templates (StringLiteral + PrefKey with compile-time validation)
-- [ ] 01-02-PLAN.md — Unified get/set API + library structure + example
+- [x] 01-01-PLAN.md — Core templates (StringLiteral + PrefKey with compile-time validation)
+- [x] 01-02-PLAN.md — Unified get/set API + library structure + example
 
 ### Phase 2: RAM Cache & Dirty Tracking
 **Goal**: Changes are tracked in memory without immediate flash writes
@@ -85,7 +85,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Type Safety | 0/2 | Planned | - |
+| 1. Foundation & Type Safety | 2/2 | ✓ Complete | 2026-02-03 |
 | 2. RAM Cache & Dirty Tracking | 0/1 | Planned | - |
 | 3. Smart Persistence | 0/TBD | Not started | - |
 | 4. Iteration & Examples | 0/TBD | Not started | - |

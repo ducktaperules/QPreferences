@@ -64,11 +64,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DEF-01 | Phase 1 | Pending |
-| DEF-02 | Phase 1 | Pending |
-| DEF-03 | Phase 1 | Pending |
-| DEF-04 | Phase 1 | Pending |
-| DEF-05 | Phase 1 | Pending |
+| DEF-01 | Phase 1 | Complete |
+| DEF-02 | Phase 1 | Complete |
+| DEF-03 | Phase 1 | Complete |
+| DEF-04 | Phase 1 | Complete |
+| DEF-05 | Phase 1 | Complete |
 | PERS-01 | Phase 3 | Pending |
 | PERS-02 | Phase 2 | Pending |
 | PERS-03 | Phase 3 | Pending |
