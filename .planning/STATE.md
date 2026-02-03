@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 
 ## Current Position
 
-Phase: 2 of 4 (RAM Cache & Dirty Tracking)
+Phase: 3 of 4 (Smart Persistence)
 Plan: 1 of 1 complete
 Status: Phase complete
-Last activity: 2026-02-03 - Completed 02-01-PLAN.md (RAM Cache Layer)
+Last activity: 2026-02-03 - Completed 03-01-PLAN.md (Explicit Save API)
 
-Progress: [██████░░░░] 50%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 2 min
-- Total execution time: 0.1 hours
+- Total plans completed: 4
+- Average duration: 2.5 min
+- Total execution time: 0.17 hours
 
 **By Phase:**
 
@@ -29,9 +29,10 @@ Progress: [██████░░░░] 50%
 |-------|-------|-------|----------|
 | 01-foundation-type-safety | 2 | 4 min | 2 min |
 | 02-ram-cache-dirty-tracking | 1 | 2 min | 2 min |
+| 03-smart-persistence | 1 | 4 min | 4 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (2 min), 02-01 (2 min)
+- Last 5 plans: 01-01 (2 min), 01-02 (2 min), 02-01 (2 min), 03-01 (4 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -56,6 +57,9 @@ Recent decisions affecting current work:
 | set() writes RAM only | Defers persistence to Phase 3 save() API | 02-01 |
 | MAX_KEYS = 64 | Safe 2.5KB cache footprint for ESP32 | 02-01 |
 | Static inline cache storage | Header-only implementation without ODR violations | 02-01 |
+| KeyMetadata parallel array | Runtime namespace/key access without templates | 03-01 |
+| save() always writes values | No default comparison without template context | 03-01 |
+| save(key) has default removal | Per-key save compares to default and removes if equal | 03-01 |
 
 ### Pending Todos
 
@@ -67,6 +71,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-03T08:48:18Z
-Stopped at: Completed 02-01-PLAN.md (Phase 2 complete)
+Last session: 2026-02-03T09:19:00Z
+Stopped at: Completed 03-01-PLAN.md (Phase 3 complete)
 Resume file: None
