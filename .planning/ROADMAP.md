@@ -73,10 +73,11 @@ Plans:
   2. Developer can filter iteration to only keys in specific namespace
   3. Library includes working example sketches demonstrating basic usage, dirty tracking, and namespace grouping
   4. Library includes factory reset function that clears all NVS entries and restores defaults
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- TBD (planned during /gsd:plan-phase 4)
+- [ ] 04-01-PLAN.md — Iteration API (PrefInfo, forEach, forEachInNamespace, factoryReset)
+- [ ] 04-02-PLAN.md — Example sketches (DirtyTracking, NamespaceGroups)
 
 ## Progress
 
@@ -88,4 +89,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 1. Foundation & Type Safety | 2/2 | ✓ Complete | 2026-02-03 |
 | 2. RAM Cache & Dirty Tracking | 1/1 | ✓ Complete | 2026-02-03 |
 | 3. Smart Persistence | 1/1 | ✓ Complete | 2026-02-03 |
-| 4. Iteration & Examples | 0/TBD | Not started | - |
+| 4. Iteration & Examples | 0/2 | Not started | - |
