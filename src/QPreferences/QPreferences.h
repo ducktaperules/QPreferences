@@ -284,6 +284,110 @@ inline void save() {
     }
 }
 
+/**
+ * @brief Iterate over all registered preference keys.
+ *
+ * Calls the callback for each registered key with a PrefInfo struct
+ * containing metadata and status. Does not expose raw values.
+ * Use get(key) with your typed key to access values.
+ *
+ * @tparam Callback Callable accepting (const PrefInfo&)
+ * @param callback Function to call for each registered key
+ *
+ * Usage:
+ *   QPrefs::forEach([](const QPreferences::PrefInfo& info) {
+ *       Serial.printf("%s/%s: %s\n",
+ *           info.namespace_name, info.key_name,
+ *           info.is_dirty ? "dirty" : "clean");
+ *   });
+ */
+template<typename Callback>
+void forEach(Callback callback) {
+    for (size_t i = 0; i < QPreferences::next_key_id; ++i) {
+        auto& meta = QPreferences::key_metadata[i];
+        auto& entry = QPreferences::cache_entries[i];
+
+        QPreferences::PrefInfo info{
+            meta.namespace_name,
+            meta.key_name,
+            i,
+            entry.is_initialized(),
+            entry.is_dirty()
+        };
+        callback(info);
+    }
+}
+
+/**
+ * @brief Iterate over registered keys in a specific namespace.
+ *
+ * Same as forEach() but only calls callback for keys matching the namespace.
+ *
+ * @tparam Callback Callable accepting (const PrefInfo&)
+ * @param ns The namespace to filter by
+ * @param callback Function to call for each matching key
+ *
+ * Usage:
+ *   QPrefs::forEachInNamespace("myapp", [](const QPreferences::PrefInfo& info) {
+ *       Serial.printf("  %s\n", info.key_name);
+ *   });
+ */
+template<typename Callback>
+void forEachInNamespace(const char* ns, Callback callback) {
+    for (size_t i = 0; i < QPreferences::next_key_id; ++i) {
+        auto& meta = QPreferences::key_metadata[i];
+        if (std::strcmp(meta.namespace_name, ns) == 0) {
+            auto& entry = QPreferences::cache_entries[i];
+
+            QPreferences::PrefInfo info{
+                meta.namespace_name,
+                meta.key_name,
+                i,
+                entry.is_initialized(),
+                entry.is_dirty()
+            };
+            callback(info);
+        }
+    }
+}
+
+/**
+ * @brief Clear all NVS entries and reset cache to uninitialized state.
+ *
+ * Groups keys by namespace and calls Preferences::clear() for each namespace.
+ * Resets all cache entries to uninitialized state (nvs_value.reset(), dirty=false).
+ * After factory reset, get(key) will return default values.
+ *
+ * WARNING: This permanently deletes all stored preference values from flash!
+ */
+inline void factoryReset() {
+    Preferences prefs;
+    const char* last_ns = nullptr;
+
+    for (size_t i = 0; i < QPreferences::next_key_id; ++i) {
+        auto& meta = QPreferences::key_metadata[i];
+
+        // Clear namespace if different from last (batch by namespace)
+        if (last_ns == nullptr || std::strcmp(last_ns, meta.namespace_name) != 0) {
+            if (last_ns != nullptr) {
+                prefs.end();
+            }
+            prefs.begin(meta.namespace_name, false);  // false = read-write
+            prefs.clear();  // Delete all keys in this namespace
+            last_ns = meta.namespace_name;
+        }
+
+        // Reset cache entry to uninitialized state
+        auto& entry = QPreferences::cache_entries[i];
+        entry.nvs_value.reset();
+        entry.dirty = false;
+    }
+
+    if (last_ns != nullptr) {
+        prefs.end();
+    }
+}
+
 } // namespace QPrefs
 
 // Convenience: bring PrefKey into global scope for cleaner usage
