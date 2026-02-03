@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Single-source-of-truth preference definitions with type-safe access and explicit persistence control
-**Current focus:** Phase 3: Smart Persistence
+**Current focus:** Phase 4: Iteration & Examples
 
 ## Current Position
 
-Phase: 3 of 4 (Smart Persistence)
-Plan: 1 of 1 complete
-Status: Phase complete
-Last activity: 2026-02-03 - Completed 03-01-PLAN.md (Explicit Save API)
+Phase: 4 of 4 (Iteration & Examples)
+Plan: 1 of 2 complete
+Status: In progress
+Last activity: 2026-02-03 - Completed 04-01-PLAN.md (Iteration API)
 
-Progress: [████████░░] 75%
+Progress: [█████████░] 83%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
-- Average duration: 2.5 min
-- Total execution time: 0.17 hours
+- Total plans completed: 5
+- Average duration: 2.2 min
+- Total execution time: 0.18 hours
 
 **By Phase:**
 
@@ -30,9 +30,10 @@ Progress: [████████░░] 75%
 | 01-foundation-type-safety | 2 | 4 min | 2 min |
 | 02-ram-cache-dirty-tracking | 1 | 2 min | 2 min |
 | 03-smart-persistence | 1 | 4 min | 4 min |
+| 04-iteration-examples | 1 | 1 min | 1 min |
 
 **Recent Trend:**
-- Last 5 plans: 01-01 (2 min), 01-02 (2 min), 02-01 (2 min), 03-01 (4 min)
+- Last 5 plans: 01-02 (2 min), 02-01 (2 min), 03-01 (4 min), 04-01 (1 min)
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -60,6 +61,9 @@ Recent decisions affecting current work:
 | KeyMetadata parallel array | Runtime namespace/key access without templates | 03-01 |
 | save() always writes values | No default comparison without template context | 03-01 |
 | save(key) has default removal | Per-key save compares to default and removes if equal | 03-01 |
+| PrefInfo excludes raw value | Users access values via typed get() | 04-01 |
+| forEach iterates next_key_id | Only iterate registered keys for efficiency | 04-01 |
+| factoryReset uses namespace batching | Groups keys by namespace and calls clear() once | 04-01 |
 
 ### Pending Todos
 
@@ -71,6 +75,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-02-03T09:19:00Z
-Stopped at: Completed 03-01-PLAN.md (Phase 3 complete)
+Last session: 2026-02-03T09:34:20Z
+Stopped at: Completed 04-01-PLAN.md (Iteration API)
 Resume file: None
