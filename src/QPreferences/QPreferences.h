@@ -63,26 +63,32 @@ typename KeyType::value_type get(const KeyType& key) {
             entry.initialized = true;
             entry.dirty = false;
         } else {
-            // Namespace exists - read from NVS
-            T nvs_result;
+            // Namespace exists - check if key exists before reading
+            if (prefs.isKey(KeyType::key_name)) {
+                // Key exists in NVS - read it
+                T nvs_result;
 
-            if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int>) {
-                nvs_result = prefs.getInt(KeyType::key_name, key.default_value);
-            } else if constexpr (std::is_same_v<T, float>) {
-                nvs_result = prefs.getFloat(KeyType::key_name, key.default_value);
-            } else if constexpr (std::is_same_v<T, bool>) {
-                nvs_result = prefs.getBool(KeyType::key_name, key.default_value);
-            } else if constexpr (std::is_same_v<T, String>) {
-                nvs_result = prefs.getString(KeyType::key_name, key.default_value);
+                if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int>) {
+                    nvs_result = prefs.getInt(KeyType::key_name, key.default_value);
+                } else if constexpr (std::is_same_v<T, float>) {
+                    nvs_result = prefs.getFloat(KeyType::key_name, key.default_value);
+                } else if constexpr (std::is_same_v<T, bool>) {
+                    nvs_result = prefs.getBool(KeyType::key_name, key.default_value);
+                } else if constexpr (std::is_same_v<T, String>) {
+                    nvs_result = prefs.getString(KeyType::key_name, key.default_value);
+                } else {
+                    static_assert(sizeof(T) == 0, "Unsupported type for QPreferences: supported types are int, float, bool, String");
+                }
+
+                entry.value = nvs_result;
+                entry.nvs_value = nvs_result;  // Key exists in NVS
             } else {
-                static_assert(sizeof(T) == 0, "Unsupported type for QPreferences: supported types are int, float, bool, String");
+                // Key doesn't exist in this namespace - use default
+                entry.value = key.default_value;
+                // Leave nvs_value empty - nothing in NVS for this key
             }
 
             prefs.end();
-
-            // Store in both current value and NVS value
-            entry.value = nvs_result;
-            entry.nvs_value = nvs_result;
             entry.initialized = true;
             entry.dirty = false;
         }
