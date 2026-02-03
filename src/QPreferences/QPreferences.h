@@ -95,7 +95,11 @@ typename KeyType::value_type get(const KeyType& key) {
 /**
  * @brief Set a preference value in RAM cache only (no NVS write).
  *
- * Updates the cached value in RAM and marks the entry as dirty.
+ * Updates the cached value in RAM and computes dirty flag intelligently:
+ * - If NVS has a value: dirty = (value != nvs_value)
+ * - If NVS has no value: dirty = (value != default_value)
+ *
+ * This means set(key, default) on fresh device marks dirty=false (nothing to save).
  * Does NOT write to NVS flash - use save() to persist changes.
  * The value type must match the key's value_type at compile time.
  *
@@ -114,7 +118,7 @@ bool set(const KeyType& key, typename KeyType::value_type value) {
     using T = typename KeyType::value_type;
     auto& entry = QPreferences::cache_entries[detail::get_key_id<KeyType>()];
 
-    // Ensure cache is initialized (loads nvs_value for isDirty comparison)
+    // Ensure cache is initialized (loads nvs_value for smart dirty comparison)
     if (!entry.is_initialized()) {
         // Lazy load from NVS to populate nvs_value
         get(key);
@@ -122,7 +126,13 @@ bool set(const KeyType& key, typename KeyType::value_type value) {
 
     // Store value in RAM cache only
     entry.value = value;
-    entry.dirty = true;  // Mark as dirty (RAM differs from NVS)
+
+    // Smart dirty comparison: compare against NVS value if exists, else default
+    if (entry.nvs_value.has_value()) {
+        entry.dirty = (value != std::get<T>(entry.nvs_value.value()));
+    } else {
+        entry.dirty = (value != key.default_value);
+    }
 
     return true;  // RAM write always succeeds
 }
