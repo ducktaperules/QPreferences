@@ -5,11 +5,11 @@
   "keywords": ["esp32", "preferences", "nvs", "type-safe", "flash"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/QPreferences"
+    "url": "https://github.com/ducktaperules/QPreferences"
   },
   "authors": [
     {
-      "name": "QPreferences Contributors"
+      "name": "Queron Williams"
     }
   ],
   "license": "MIT",
