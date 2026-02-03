@@ -64,26 +64,26 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DEF-01 | TBD | Pending |
-| DEF-02 | TBD | Pending |
-| DEF-03 | TBD | Pending |
-| DEF-04 | TBD | Pending |
-| DEF-05 | TBD | Pending |
-| PERS-01 | TBD | Pending |
-| PERS-02 | TBD | Pending |
-| PERS-03 | TBD | Pending |
-| PERS-04 | TBD | Pending |
-| PERS-05 | TBD | Pending |
-| TRCK-01 | TBD | Pending |
-| TRCK-02 | TBD | Pending |
-| TRCK-03 | TBD | Pending |
-| TRCK-04 | TBD | Pending |
+| DEF-01 | Phase 1 | Pending |
+| DEF-02 | Phase 1 | Pending |
+| DEF-03 | Phase 1 | Pending |
+| DEF-04 | Phase 1 | Pending |
+| DEF-05 | Phase 1 | Pending |
+| PERS-01 | Phase 3 | Pending |
+| PERS-02 | Phase 2 | Pending |
+| PERS-03 | Phase 3 | Pending |
+| PERS-04 | Phase 3 | Pending |
+| PERS-05 | Phase 3 | Pending |
+| TRCK-01 | Phase 2 | Pending |
+| TRCK-02 | Phase 2 | Pending |
+| TRCK-03 | Phase 4 | Pending |
+| TRCK-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 14 total
-- Mapped to phases: 0
-- Unmapped: 14 (pending roadmap)
+- Mapped to phases: 14
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-03*
-*Last updated: 2026-02-03 after initial definition*
+*Last updated: 2026-02-03 after roadmap creation*
