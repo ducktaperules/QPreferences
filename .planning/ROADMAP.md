@@ -44,10 +44,10 @@ Plans:
   2. Developer can call isModified(key) to check if current value differs from default
   3. Developer can call isDirty(key) to check if current value differs from what's stored in NVS
   4. Multiple set() calls to same key update RAM cache without triggering flash writes
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- TBD (planned during /gsd:plan-phase 2)
+- [ ] 02-01-PLAN.md — Cache infrastructure with dirty tracking and isModified/isDirty APIs
 
 ### Phase 3: Smart Persistence
 **Goal**: Persistence is explicit, optimized, and flash-friendly
@@ -86,6 +86,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation & Type Safety | 0/2 | Planned | - |
-| 2. RAM Cache & Dirty Tracking | 0/TBD | Not started | - |
+| 2. RAM Cache & Dirty Tracking | 0/1 | Planned | - |
 | 3. Smart Persistence | 0/TBD | Not started | - |
 | 4. Iteration & Examples | 0/TBD | Not started | - |
