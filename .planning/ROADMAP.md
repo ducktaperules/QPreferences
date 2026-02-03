@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation & Type Safety** - Template infrastructure and registry
 - [x] **Phase 2: RAM Cache & Dirty Tracking** - Memory-first change tracking
-- [ ] **Phase 3: Smart Persistence** - Optimized NVS storage with batching
+- [x] **Phase 3: Smart Persistence** - Optimized NVS storage with batching
 - [ ] **Phase 4: Iteration & Examples** - Enumeration and documentation
 
 ## Phase Details
@@ -62,7 +62,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md — Key metadata, save() API with namespace batching and default removal
+- [x] 03-01-PLAN.md — Key metadata, save() API with namespace batching and default removal
 
 ### Phase 4: Iteration & Examples
 **Goal**: Developer can enumerate and inspect all preferences
@@ -87,5 +87,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Type Safety | 2/2 | ✓ Complete | 2026-02-03 |
 | 2. RAM Cache & Dirty Tracking | 1/1 | ✓ Complete | 2026-02-03 |
-| 3. Smart Persistence | 0/1 | Planned | - |
+| 3. Smart Persistence | 1/1 | ✓ Complete | 2026-02-03 |
 | 4. Iteration & Examples | 0/TBD | Not started | - |

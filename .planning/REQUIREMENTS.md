@@ -69,11 +69,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | DEF-03 | Phase 1 | Complete |
 | DEF-04 | Phase 1 | Complete |
 | DEF-05 | Phase 1 | Complete |
-| PERS-01 | Phase 3 | Pending |
+| PERS-01 | Phase 3 | Complete |
 | PERS-02 | Phase 2 | Complete |
-| PERS-03 | Phase 3 | Pending |
-| PERS-04 | Phase 3 | Pending |
-| PERS-05 | Phase 3 | Pending |
+| PERS-03 | Phase 3 | Complete |
+| PERS-04 | Phase 3 | Complete |
+| PERS-05 | Phase 3 | Complete |
 | TRCK-01 | Phase 2 | Complete |
 | TRCK-02 | Phase 2 | Complete |
 | TRCK-03 | Phase 4 | Pending |
