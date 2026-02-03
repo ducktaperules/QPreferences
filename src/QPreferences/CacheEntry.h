@@ -11,10 +11,11 @@ namespace QPreferences {
 /**
  * @brief Type-safe variant for storing preference values in cache.
  *
- * Supports the four core ESP32 Preferences types: int32_t, float, bool, String.
+ * Supports the core ESP32 Preferences types: int, int32_t, float, bool, String.
+ * Both int and int32_t are included as distinct types (even if same size on ESP32).
  * Uses std::variant for fixed-size, RTTI-free storage (no heap allocation).
  */
-using ValueVariant = std::variant<int32_t, float, bool, String>;
+using ValueVariant = std::variant<int, int32_t, float, bool, String>;
 
 /**
  * @brief Cache entry for a single preference with three-state tracking.
