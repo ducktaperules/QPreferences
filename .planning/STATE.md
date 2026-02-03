@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 Phase: 4 of 4 (Iteration & Examples)
 Plan: 2 of 2 complete
 Status: Phase complete - All phases finished
-Last activity: 2026-02-03 - Completed quick task 002 (Fix int type and NVS bugs)
+Last activity: 2026-02-03 - Completed quick task 003 (Fix dirty tracking semantics)
 
 Progress: [██████████] 100%
 
@@ -68,6 +68,9 @@ Recent decisions affecting current work:
 | Factual, concise documentation | No marketing language in README | q-001 |
 | Both int and int32_t in ValueVariant | Distinct types even if same size on ESP32 | q-002 |
 | NVS read-write mode for get() | Auto-creates namespaces on first access | q-002 |
+| Separate initialized from nvs_value | initialized tracks lazy load gate, nvs_value tracks actual flash presence | q-003 |
+| Read-only NVS mode for get() | Prevents unnecessary namespace creation on fresh devices | q-003 |
+| Smart dirty comparison | Compare against nvs_value if exists, else default_value | q-003 |
 
 ### Pending Todos
 
@@ -83,9 +86,10 @@ None.
 |---|-------------|------|--------|-----------|
 | 001 | Create README with installation and usage docs | 2026-02-03 | ea19adb | [001-create-readme](./quick/001-create-readme/) |
 | 002 | Fix int type support and NVS namespace creation bugs | 2026-02-03 | 2fb5d1c | [002-fix-int-type-and-nvs-bugs](./quick/002-fix-int-type-and-nvs-bugs/) |
+| 003 | Fix dirty tracking semantics with read-only NVS and smart comparison | 2026-02-03 | 59d2bbf | [003-fix-dirty-tracking-semantics](./quick/003-fix-dirty-tracking-semantics/) |
 
 ## Session Continuity
 
-Last session: 2026-02-03T13:29:04Z
-Stopped at: Completed quick task 002 (Fix int type and NVS bugs) - Library now works on fresh ESP32
+Last session: 2026-02-03T14:34:28Z
+Stopped at: Completed quick task 003 (Fix dirty tracking semantics) - Read-only NVS access with smart dirty comparison
 Resume file: None
