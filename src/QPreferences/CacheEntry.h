@@ -96,6 +96,20 @@ struct KeyMetadata {
 static inline std::array<KeyMetadata, MAX_KEYS> key_metadata;
 
 /**
+ * @brief Information about a preference, passed to forEach callbacks.
+ *
+ * Provides access to key metadata and status without exposing
+ * the raw value (user accesses value via get(key) with their typed key).
+ */
+struct PrefInfo {
+    const char* namespace_name;   ///< The namespace this key belongs to
+    const char* key_name;         ///< The key name within the namespace
+    size_t index;                 ///< Index into cache_entries array
+    bool is_initialized;          ///< Whether key has been loaded from NVS
+    bool is_dirty;                ///< Whether RAM differs from NVS
+};
+
+/**
  * @brief Register a new preference key and get its unique ID.
  * @param ns The namespace name for this key
  * @param key The key name within the namespace
