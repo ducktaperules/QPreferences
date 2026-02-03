@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 Phase: 4 of 4 (Iteration & Examples)
 Plan: 2 of 2 complete
 Status: Phase complete - All phases finished
-Last activity: 2026-02-03 - Completed quick task 001 (Create README)
+Last activity: 2026-02-03 - Completed quick task 002 (Fix int type and NVS bugs)
 
 Progress: [██████████] 100%
 
@@ -66,6 +66,8 @@ Recent decisions affecting current work:
 | factoryReset uses namespace batching | Groups keys by namespace and calls clear() once | 04-01 |
 | Examples organized by feature | Dirty tracking separate from iteration for clarity | 04-02 |
 | Factual, concise documentation | No marketing language in README | q-001 |
+| Both int and int32_t in ValueVariant | Distinct types even if same size on ESP32 | q-002 |
+| NVS read-write mode for get() | Auto-creates namespaces on first access | q-002 |
 
 ### Pending Todos
 
@@ -80,9 +82,10 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 001 | Create README with installation and usage docs | 2026-02-03 | ea19adb | [001-create-readme](./quick/001-create-readme/) |
+| 002 | Fix int type support and NVS namespace creation bugs | 2026-02-03 | 2fb5d1c | [002-fix-int-type-and-nvs-bugs](./quick/002-fix-int-type-and-nvs-bugs/) |
 
 ## Session Continuity
 
-Last session: 2026-02-03T09:54:53Z
-Stopped at: Completed quick task 001 (Create README) - Documentation added
+Last session: 2026-02-03T13:29:04Z
+Stopped at: Completed quick task 002 (Fix int type and NVS bugs) - Library now works on fresh ESP32
 Resume file: None
