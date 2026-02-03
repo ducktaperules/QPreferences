@@ -53,7 +53,9 @@ typename KeyType::value_type get(const KeyType& key) {
     // Lazy initialization: load from NVS only on first access
     if (!entry.is_initialized()) {
         Preferences prefs;
-        prefs.begin(KeyType::namespace_name, true);  // true = read-only
+        // false = read-write mode creates namespace if it doesn't exist
+        // (read-only mode fails with NOT_FOUND on first boot)
+        prefs.begin(KeyType::namespace_name, false);
 
         T nvs_result;
 
