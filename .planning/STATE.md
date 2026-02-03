@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-03)
 
 **Core value:** Single-source-of-truth preference definitions with type-safe access and explicit persistence control
-**Current focus:** Phase 2: RAM Cache & Dirty Tracking
+**Current focus:** Phase 3: Smart Persistence
 
 ## Current Position
 
