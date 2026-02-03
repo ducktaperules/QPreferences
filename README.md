@@ -65,7 +65,3 @@ void loop() {}
 - **BasicUsage** - Core get/set/save usage
 - **DirtyTracking** - isDirty vs isModified, selective saves
 - **NamespaceGroups** - forEach, forEachInNamespace, factoryReset
-
-## License
-
-MIT
