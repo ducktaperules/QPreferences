@@ -36,6 +36,7 @@ void setup() {
 
   // Increment and save the boot count
   QPrefs::set(bootCount, count + 1);
+  QPrefs::save(bootCount);
 
   // Read other preferences - each returns its declared type
   float thresh = QPrefs::get(threshold);
