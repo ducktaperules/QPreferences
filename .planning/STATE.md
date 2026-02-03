@@ -12,7 +12,7 @@ See: .planning/PROJECT.md (updated 2026-02-03)
 Phase: 4 of 4 (Iteration & Examples)
 Plan: 2 of 2 complete
 Status: Phase complete - All phases finished
-Last activity: 2026-02-03 - Completed quick task 003 (Fix dirty tracking semantics)
+Last activity: 2026-02-03 - Completed quick task 004 (Check key exists before read)
 
 Progress: [██████████] 100%
 
@@ -71,6 +71,8 @@ Recent decisions affecting current work:
 | Separate initialized from nvs_value | initialized tracks lazy load gate, nvs_value tracks actual flash presence | q-003 |
 | Read-only NVS mode for get() | Prevents unnecessary namespace creation on fresh devices | q-003 |
 | Smart dirty comparison | Compare against nvs_value if exists, else default_value | q-003 |
+| prefs.isKey() before NVS reads | Prevents ESP32 Preferences error logging for missing keys | q-004 |
+| nvs_value empty when key missing | Aligns with fresh device behavior for correct dirty tracking | q-004 |
 
 ### Pending Todos
 
@@ -87,9 +89,10 @@ None.
 | 001 | Create README with installation and usage docs | 2026-02-03 | ea19adb | [001-create-readme](./quick/001-create-readme/) |
 | 002 | Fix int type support and NVS namespace creation bugs | 2026-02-03 | 2fb5d1c | [002-fix-int-type-and-nvs-bugs](./quick/002-fix-int-type-and-nvs-bugs/) |
 | 003 | Fix dirty tracking semantics with read-only NVS and smart comparison | 2026-02-03 | 59d2bbf | [003-fix-dirty-tracking-semantics](./quick/003-fix-dirty-tracking-semantics/) |
+| 004 | Add isKey() check before NVS reads to prevent error logging | 2026-02-03 | 3e0221c | [004-check-key-exists-before-read](./quick/004-check-key-exists-before-read/) |
 
 ## Session Continuity
 
-Last session: 2026-02-03T14:34:28Z
-Stopped at: Completed quick task 003 (Fix dirty tracking semantics) - Read-only NVS access with smart dirty comparison
+Last session: 2026-02-03T16:13:37Z
+Stopped at: Completed quick task 004 (Check key exists before read) - Silent NVS access with isKey() guard
 Resume file: None
