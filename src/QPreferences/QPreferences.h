@@ -4,6 +4,7 @@
 #include <Preferences.h>
 #include <type_traits>
 #include <variant>
+#include <cstring>
 #include "PrefKey.h"
 #include "CacheEntry.h"
 
@@ -173,6 +174,114 @@ bool isDirty(const KeyType& key) {
     }
 
     return entry.is_dirty();
+}
+
+/**
+ * @brief Persist a single preference key to NVS flash.
+ *
+ * If the current value equals the default, removes the key from NVS (PERS-04).
+ * If the current value differs from default, writes to NVS.
+ * After save, isDirty(key) returns false.
+ *
+ * @tparam KeyType The PrefKey type (automatically deduced)
+ * @param key The preference key to save
+ */
+template<typename KeyType>
+void save(const KeyType& key) {
+    using T = typename KeyType::value_type;
+    auto& entry = QPreferences::cache_entries[detail::get_key_id<KeyType>()];
+    auto& meta = QPreferences::key_metadata[detail::get_key_id<KeyType>()];
+
+    if (!entry.is_initialized() || !entry.is_dirty()) {
+        return;  // Nothing to save
+    }
+
+    Preferences prefs;
+    prefs.begin(meta.namespace_name, false);  // false = read-write
+
+    T current = std::get<T>(entry.value);
+
+    if (current == key.default_value) {
+        // Remove from NVS if equals default (PERS-04)
+        prefs.remove(meta.key_name);
+        entry.nvs_value.reset();  // Mark as no NVS value
+    } else {
+        // Write to NVS
+        if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int>) {
+            prefs.putInt(meta.key_name, current);
+        } else if constexpr (std::is_same_v<T, float>) {
+            prefs.putFloat(meta.key_name, current);
+        } else if constexpr (std::is_same_v<T, bool>) {
+            prefs.putBool(meta.key_name, current);
+        } else if constexpr (std::is_same_v<T, String>) {
+            prefs.putString(meta.key_name, current);
+        }
+        entry.nvs_value = entry.value;
+    }
+
+    prefs.end();
+    entry.dirty = false;
+}
+
+/**
+ * @brief Persist all dirty preference values to NVS flash in a single operation.
+ *
+ * Groups dirty entries by namespace and writes all entries in the same namespace
+ * within a single begin/end cycle to minimize flash wear (PERS-05).
+ *
+ * Note: Unlike save(key), this function does NOT perform default value comparison
+ * because it operates without template context. Values are always written.
+ * Use save(key) for individual keys if you want default removal behavior.
+ *
+ * After save() completes, isDirty() returns false for all saved keys.
+ */
+inline void save() {
+    Preferences prefs;
+    const char* current_namespace = nullptr;
+
+    for (size_t i = 0; i < QPreferences::cache_entries.size(); ++i) {
+        auto& entry = QPreferences::cache_entries[i];
+
+        // Skip uninitialized or clean entries
+        if (!entry.is_initialized() || !entry.is_dirty()) {
+            continue;
+        }
+
+        auto& meta = QPreferences::key_metadata[i];
+
+        // Open new namespace if needed (namespace batching)
+        if (current_namespace == nullptr || std::strcmp(current_namespace, meta.namespace_name) != 0) {
+            if (current_namespace != nullptr) {
+                prefs.end();  // Close previous namespace
+            }
+            prefs.begin(meta.namespace_name, false);  // false = read-write
+            current_namespace = meta.namespace_name;
+        }
+
+        // Write value based on type stored in variant
+        std::visit([&prefs, &meta, &entry](auto&& val) {
+            using T = std::decay_t<decltype(val)>;
+            if constexpr (std::is_same_v<T, int32_t>) {
+                prefs.putInt(meta.key_name, val);
+                entry.nvs_value = entry.value;
+            } else if constexpr (std::is_same_v<T, float>) {
+                prefs.putFloat(meta.key_name, val);
+                entry.nvs_value = entry.value;
+            } else if constexpr (std::is_same_v<T, bool>) {
+                prefs.putBool(meta.key_name, val);
+                entry.nvs_value = entry.value;
+            } else if constexpr (std::is_same_v<T, String>) {
+                prefs.putString(meta.key_name, val);
+                entry.nvs_value = entry.value;
+            }
+        }, entry.value);
+
+        entry.dirty = false;  // Clear dirty flag after write
+    }
+
+    if (current_namespace != nullptr) {
+        prefs.end();  // Close final namespace
+    }
 }
 
 } // namespace QPrefs
