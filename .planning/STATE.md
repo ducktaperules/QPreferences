@@ -75,6 +75,12 @@ None - project complete.
 
 None.
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 001 | Create README with installation and usage docs | 2026-02-03 | ea19adb | [001-create-readme](./quick/001-create-readme/) |
+
 ## Session Continuity
 
 Last session: 2026-02-03T09:54:53Z
