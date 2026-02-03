@@ -78,11 +78,33 @@ static inline std::array<CacheEntry, MAX_KEYS> cache_entries;
 static inline size_t next_key_id = 0;
 
 /**
+ * @brief Metadata for a preference key, storing namespace and key name pointers.
+ *
+ * This enables save() to iterate cache entries and access the namespace/key name
+ * for each entry without requiring template context at runtime.
+ */
+struct KeyMetadata {
+    const char* namespace_name = nullptr;
+    const char* key_name = nullptr;
+};
+
+/**
+ * @brief Global metadata storage for all preference keys.
+ *
+ * Parallel array to cache_entries - same index maps to same key.
+ */
+static inline std::array<KeyMetadata, MAX_KEYS> key_metadata;
+
+/**
  * @brief Register a new preference key and get its unique ID.
+ * @param ns The namespace name for this key
+ * @param key The key name within the namespace
  * @return Unique ID for this key (index into cache_entries array)
  */
-inline size_t register_key() {
-    return next_key_id++;
+inline size_t register_key(const char* ns, const char* key) {
+    size_t id = next_key_id++;
+    key_metadata[id] = {ns, key};
+    return id;
 }
 
 } // namespace QPreferences

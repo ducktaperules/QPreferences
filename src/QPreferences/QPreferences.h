@@ -15,13 +15,17 @@ namespace detail {
      *
      * Uses static variable initialization to ensure each unique KeyType
      * gets a single, persistent ID throughout program lifetime.
+     * Also registers the namespace and key name for runtime access by save().
      *
      * @tparam KeyType The PrefKey type
      * @return Unique ID for this key (index into cache_entries array)
      */
     template<typename KeyType>
     size_t get_key_id() {
-        static size_t id = QPreferences::register_key();
+        static size_t id = QPreferences::register_key(
+            KeyType::namespace_name,
+            KeyType::key_name
+        );
         return id;
     }
 } // namespace detail
