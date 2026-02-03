@@ -76,8 +76,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERS-05 | Phase 3 | Complete |
 | TRCK-01 | Phase 2 | Complete |
 | TRCK-02 | Phase 2 | Complete |
-| TRCK-03 | Phase 4 | Pending |
-| TRCK-04 | Phase 4 | Pending |
+| TRCK-03 | Phase 4 | Complete |
+| TRCK-04 | Phase 4 | Complete |
 
 **Coverage:**
 - v1 requirements: 14 total
