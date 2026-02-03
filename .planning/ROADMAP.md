@@ -29,10 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Developer can call get(key) and receive correct type without casting
   4. Developer can call set(key, value) and compiler enforces type matching
   5. All supported types (int, float, bool, String) work with unified get/set API
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- TBD (planned during /gsd:plan-phase 1)
+- [ ] 01-01-PLAN.md — Core templates (StringLiteral + PrefKey with compile-time validation)
+- [ ] 01-02-PLAN.md — Unified get/set API + library structure + example
 
 ### Phase 2: RAM Cache & Dirty Tracking
 **Goal**: Changes are tracked in memory without immediate flash writes
@@ -84,7 +85,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation & Type Safety | 0/TBD | Not started | - |
+| 1. Foundation & Type Safety | 0/2 | Planned | - |
 | 2. RAM Cache & Dirty Tracking | 0/TBD | Not started | - |
 | 3. Smart Persistence | 0/TBD | Not started | - |
 | 4. Iteration & Examples | 0/TBD | Not started | - |
