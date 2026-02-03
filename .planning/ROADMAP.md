@@ -59,10 +59,10 @@ Plans:
   3. When saved value matches default, the key is removed from NVS (not stored)
   4. Multiple dirty keys in same namespace are written in single begin/end cycle (batched)
   5. After save() completes, isDirty() returns false for all saved keys
-**Plans**: TBD
+**Plans**: 1 plan
 
 Plans:
-- TBD (planned during /gsd:plan-phase 3)
+- [ ] 03-01-PLAN.md — Key metadata, save() API with namespace batching and default removal
 
 ### Phase 4: Iteration & Examples
 **Goal**: Developer can enumerate and inspect all preferences
@@ -87,5 +87,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 |-------|----------------|--------|-----------|
 | 1. Foundation & Type Safety | 2/2 | ✓ Complete | 2026-02-03 |
 | 2. RAM Cache & Dirty Tracking | 1/1 | ✓ Complete | 2026-02-03 |
-| 3. Smart Persistence | 0/TBD | Not started | - |
+| 3. Smart Persistence | 0/1 | Planned | - |
 | 4. Iteration & Examples | 0/TBD | Not started | - |
