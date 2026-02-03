@@ -26,11 +26,11 @@ Single-source-of-truth preference definitions with type-safe access and explicit
 - [ ] `isDirty(key)` — check if current value differs from what's saved in NVS
 - [ ] Iterate over all preferences with access to namespace, key name, value, status
 - [ ] Filter iteration by namespace
-- [ ] JSON serialization of preferences (all or by namespace)
 - [ ] Support int, float, bool, and String types
 
 ### Out of Scope
 
+- JSON serialization — keeping v1 scope tight; can add in v2
 - Binary blob storage — not needed for typical preferences
 - ESP-IDF native support — Arduino framework only
 - Encryption — use ESP32's NVS encryption if needed
@@ -49,6 +49,7 @@ This library wraps Preferences to provide a cleaner developer experience while m
 ## Constraints
 
 - **Platform**: ESP32 with Arduino framework
+- **Build**: PlatformIO
 - **Dependency**: Uses Arduino Preferences.h internally
 - **Memory**: Keys self-register, so RAM scales with number of preferences defined
 - **Types**: Limited to int, float, bool, String (no arbitrary structs)
@@ -63,4 +64,4 @@ This library wraps Preferences to provide a cleaner developer experience while m
 | Remove defaults from NVS | Saves space, makes "reset to default" trivial | — Pending |
 
 ---
-*Last updated: 2026-02-03 after initialization*
+*Last updated: 2026-02-03 after requirements definition*
