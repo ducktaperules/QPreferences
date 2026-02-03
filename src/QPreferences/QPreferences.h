@@ -53,30 +53,39 @@ typename KeyType::value_type get(const KeyType& key) {
     // Lazy initialization: load from NVS only on first access
     if (!entry.is_initialized()) {
         Preferences prefs;
-        // false = read-write mode creates namespace if it doesn't exist
-        // (read-only mode fails with NOT_FOUND on first boot)
-        prefs.begin(KeyType::namespace_name, false);
+        // true = read-only mode (doesn't create namespace if missing)
+        bool opened = prefs.begin(KeyType::namespace_name, true);
 
-        T nvs_result;
-
-        if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int>) {
-            nvs_result = prefs.getInt(KeyType::key_name, key.default_value);
-        } else if constexpr (std::is_same_v<T, float>) {
-            nvs_result = prefs.getFloat(KeyType::key_name, key.default_value);
-        } else if constexpr (std::is_same_v<T, bool>) {
-            nvs_result = prefs.getBool(KeyType::key_name, key.default_value);
-        } else if constexpr (std::is_same_v<T, String>) {
-            nvs_result = prefs.getString(KeyType::key_name, key.default_value);
+        if (!opened) {
+            // Namespace doesn't exist (fresh device) - use default value
+            entry.value = key.default_value;
+            // Leave entry.nvs_value empty (no NVS value exists)
+            entry.initialized = true;
+            entry.dirty = false;
         } else {
-            static_assert(sizeof(T) == 0, "Unsupported type for QPreferences: supported types are int, float, bool, String");
+            // Namespace exists - read from NVS
+            T nvs_result;
+
+            if constexpr (std::is_same_v<T, int32_t> || std::is_same_v<T, int>) {
+                nvs_result = prefs.getInt(KeyType::key_name, key.default_value);
+            } else if constexpr (std::is_same_v<T, float>) {
+                nvs_result = prefs.getFloat(KeyType::key_name, key.default_value);
+            } else if constexpr (std::is_same_v<T, bool>) {
+                nvs_result = prefs.getBool(KeyType::key_name, key.default_value);
+            } else if constexpr (std::is_same_v<T, String>) {
+                nvs_result = prefs.getString(KeyType::key_name, key.default_value);
+            } else {
+                static_assert(sizeof(T) == 0, "Unsupported type for QPreferences: supported types are int, float, bool, String");
+            }
+
+            prefs.end();
+
+            // Store in both current value and NVS value
+            entry.value = nvs_result;
+            entry.nvs_value = nvs_result;
+            entry.initialized = true;
+            entry.dirty = false;
         }
-
-        prefs.end();
-
-        // Store in both current value and NVS value
-        entry.value = nvs_result;
-        entry.nvs_value = nvs_result;
-        entry.dirty = false;
     }
 
     // Return cached value
