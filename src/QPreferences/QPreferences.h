@@ -204,6 +204,80 @@ bool isDirty(const KeyType& key) {
 }
 
 /**
+ * @brief Check if a preference value exists in NVS.
+ *
+ * Returns true if a value for this key has been saved to NVS flash storage.
+ * Returns false for keys that only have their default value (never saved)
+ * or keys that have been reset.
+ *
+ * @tparam KeyType The PrefKey type (automatically deduced)
+ * @param key The preference key definition
+ * @return true if key exists in NVS, false otherwise
+ *
+ * Usage:
+ *   PrefKey<int, "myapp", "count"> countKey{0};
+ *   bool saved = QPrefs::isSaved(countKey);  // false (fresh device)
+ *   QPrefs::set(countKey, 42);
+ *   saved = QPrefs::isSaved(countKey);  // false (not yet persisted)
+ *   QPrefs::save(countKey);
+ *   saved = QPrefs::isSaved(countKey);  // true (now in NVS)
+ */
+template<typename KeyType>
+bool isSaved(const KeyType& key) {
+    auto& entry = QPreferences::cache_entries[detail::get_key_id<KeyType>()];
+
+    // Ensure cache is initialized
+    if (!entry.is_initialized()) {
+        get(key);  // Triggers lazy load
+    }
+
+    return entry.nvs_value.has_value();
+}
+
+/**
+ * @brief Reset a preference to its default value and remove from NVS.
+ *
+ * Sets the RAM value back to the key's default_value and removes
+ * the key from NVS flash storage. After reset:
+ * - get(key) returns default_value
+ * - isModified(key) returns false
+ * - isDirty(key) returns false
+ * - isSaved(key) returns false
+ *
+ * @tparam KeyType The PrefKey type (automatically deduced)
+ * @param key The preference key to reset
+ *
+ * Usage:
+ *   PrefKey<int, "myapp", "count"> countKey{0};
+ *   QPrefs::set(countKey, 42);
+ *   QPrefs::save(countKey);  // Persisted to NVS
+ *   QPrefs::reset(countKey);  // Back to default, removed from NVS
+ */
+template<typename KeyType>
+void reset(const KeyType& key) {
+    auto& entry = QPreferences::cache_entries[detail::get_key_id<KeyType>()];
+
+    // Ensure cache is initialized
+    if (!entry.is_initialized()) {
+        get(key);  // Triggers lazy load
+    }
+
+    // Set RAM value to default
+    entry.value = key.default_value;
+
+    // Remove from NVS if it exists there
+    if (entry.nvs_value.has_value()) {
+        Preferences prefs;
+        prefs.begin(KeyType::namespace_name, false);  // false = read-write
+        prefs.remove(KeyType::key_name);
+        prefs.end();
+        entry.nvs_value.reset();  // Mark as no NVS value
+    }
+
+    entry.dirty = false;  // RAM (default) matches NVS (nothing)
+}
+
+/**
  * @brief Persist a single preference key to NVS flash.
  *
  * If the current value equals the default, removes the key from NVS (PERS-04).

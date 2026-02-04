@@ -6,8 +6,8 @@ Type-safe ESP32 preferences with compile-time validation
 
 - `PrefKey<T, "namespace", "key">{default}` for compile-time type safety
 - Namespace/key length validation (15 char ESP32 NVS limit)
-- RAM cache with dirty tracking (`isDirty`, `isModified`)
-- Explicit persistence (`save()`, `save(key)`, `factoryReset()`)
+- RAM cache with dirty tracking (`isDirty`, `isModified`, `isSaved`)
+- Explicit persistence (`save()`, `save(key)`, `reset(key)`, `factoryReset()`)
 - Iteration (`forEach`, `forEachInNamespace`)
 - Supported types: `int`, `float`, `bool`, `String`
 
@@ -55,8 +55,10 @@ void loop() {}
 | `QPrefs::set(key, value)` | Set value in RAM (no flash write) |
 | `QPrefs::isDirty(key)` | True if RAM differs from NVS |
 | `QPrefs::isModified(key)` | True if value differs from default |
+| `QPrefs::isSaved(key)` | True if key exists in NVS |
 | `QPrefs::save(key)` | Persist single key (removes if default) |
 | `QPrefs::save()` | Persist all dirty keys |
+| `QPrefs::reset(key)` | Restore default and remove from NVS |
 | `QPrefs::factoryReset()` | Clear all NVS, restore defaults |
 | `QPrefs::forEach(callback)` | Iterate all registered keys |
 
