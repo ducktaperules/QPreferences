@@ -58,7 +58,7 @@ void loop() {}
 | `QPrefs::isSaved(key)` | True if key exists in NVS |
 | `QPrefs::save(key)` | Persist single key (removes if default) |
 | `QPrefs::save()` | Persist all dirty keys |
-| `QPrefs::reset(key)` | Restore default and remove from NVS |
+| `QPrefs::reset(key)` | Restore RAM to default (NVS unchanged) |
 | `QPrefs::factoryReset()` | Clear all NVS, restore defaults |
 | `QPrefs::forEach(callback)` | Iterate all registered keys |
 

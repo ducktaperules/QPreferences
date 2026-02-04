@@ -235,14 +235,16 @@ bool isSaved(const KeyType& key) {
 }
 
 /**
- * @brief Reset a preference to its default value and remove from NVS.
+ * @brief Reset a preference to its default value in RAM.
  *
- * Sets the RAM value back to the key's default_value and removes
- * the key from NVS flash storage. After reset:
+ * Sets the RAM value back to the key's default_value without
+ * modifying NVS. After reset:
  * - get(key) returns default_value
  * - isModified(key) returns false
- * - isDirty(key) returns false
- * - isSaved(key) returns false
+ * - isDirty(key) returns true if NVS has a different value
+ * - isSaved(key) unchanged (still reflects NVS state)
+ *
+ * Use save(key) after reset to persist the default (which removes from NVS).
  *
  * @tparam KeyType The PrefKey type (automatically deduced)
  * @param key The preference key to reset
@@ -251,10 +253,12 @@ bool isSaved(const KeyType& key) {
  *   PrefKey<int, "myapp", "count"> countKey{0};
  *   QPrefs::set(countKey, 42);
  *   QPrefs::save(countKey);  // Persisted to NVS
- *   QPrefs::reset(countKey);  // Back to default, removed from NVS
+ *   QPrefs::reset(countKey);  // RAM back to default, NVS unchanged
+ *   QPrefs::save(countKey);   // Now removes from NVS
  */
 template<typename KeyType>
 void reset(const KeyType& key) {
+    using T = typename KeyType::value_type;
     auto& entry = QPreferences::cache_entries[detail::get_key_id<KeyType>()];
 
     // Ensure cache is initialized
@@ -265,16 +269,12 @@ void reset(const KeyType& key) {
     // Set RAM value to default
     entry.value = key.default_value;
 
-    // Remove from NVS if it exists there
+    // Update dirty flag: dirty if NVS has a different value
     if (entry.nvs_value.has_value()) {
-        Preferences prefs;
-        prefs.begin(KeyType::namespace_name, false);  // false = read-write
-        prefs.remove(KeyType::key_name);
-        prefs.end();
-        entry.nvs_value.reset();  // Mark as no NVS value
+        entry.dirty = (key.default_value != std::get<T>(entry.nvs_value.value()));
+    } else {
+        entry.dirty = false;  // No NVS value, default matches "nothing"
     }
-
-    entry.dirty = false;  // RAM (default) matches NVS (nothing)
 }
 
 /**
