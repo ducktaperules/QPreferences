@@ -65,3 +65,17 @@ void loop() {}
 - **BasicUsage** - Core get/set/save usage
 - **DirtyTracking** - isDirty vs isModified, selective saves
 - **NamespaceGroups** - forEach, forEachInNamespace, factoryReset
+
+## Configurable Capacity
+
+By default, QPreferences supports up to 64 unique keys. Projects with more keys can increase the capacity at compile time by defining `QPREFERENCES_MAX_KEYS`:
+
+**PlatformIO:**
+
+```ini
+build_flags =
+    -std=gnu++20
+    -DQPREFERENCES_MAX_KEYS=96
+```
+
+This adjusts the fixed-size cache and metadata arrays. Memory usage increases linearly with the key count. If you exceed the configured limit at runtime, a debug `assert` will trigger; in release builds, additional keys will be ignored to avoid out-of-bounds writes.

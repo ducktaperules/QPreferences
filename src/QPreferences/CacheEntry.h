@@ -4,6 +4,7 @@
 #include <variant>
 #include <optional>
 #include <array>
+#include <cassert>
 #include <WString.h>
 
 namespace QPreferences {
@@ -68,10 +69,13 @@ struct CacheEntry {
 /**
  * @brief Maximum number of unique preference keys supported.
  *
- * 64 keys provides ~2.5KB of cache storage on ESP32, which is a safe
- * balance between memory usage and flexibility for most applications.
+ * Default is 64. Override by defining QPREFERENCES_MAX_KEYS via build flags
+ * (e.g., -DQPREFERENCES_MAX_KEYS=96) to increase capacity.
  */
-static constexpr size_t MAX_KEYS = 64;
+#ifndef QPREFERENCES_MAX_KEYS
+#define QPREFERENCES_MAX_KEYS 64
+#endif
+static constexpr size_t MAX_KEYS = QPREFERENCES_MAX_KEYS;
 
 /**
  * @brief Global cache storage for all preference entries.
@@ -125,6 +129,12 @@ struct PrefInfo {
  * @return Unique ID for this key (index into cache_entries array)
  */
 inline size_t register_key(const char* ns, const char* key) {
+    // Guard against exceeding configured capacity; fail-fast in debug.
+    assert(next_key_id < MAX_KEYS && "QPreferences: preference key limit exceeded (increase QPREFERENCES_MAX_KEYS)");
+    if (next_key_id >= MAX_KEYS) {
+        // Fail-safe: avoid out-of-bounds write. Reuse last valid index.
+        return MAX_KEYS - 1;
+    }
     size_t id = next_key_id++;
     key_metadata[id] = {ns, key};
     return id;
