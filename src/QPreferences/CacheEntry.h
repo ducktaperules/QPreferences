@@ -80,15 +80,16 @@ static constexpr size_t MAX_KEYS = QPREFERENCES_MAX_KEYS;
 /**
  * @brief Global cache storage for all preference entries.
  *
- * Static inline ensures single definition across translation units
- * (header-only implementation compatible with C++17).
+ * Inline variable ensures single shared definition across translation units
+ * (C++17 feature). Do NOT use 'static inline' as that creates separate
+ * copies per translation unit.
  */
-static inline std::array<CacheEntry, MAX_KEYS> cache_entries;
+inline std::array<CacheEntry, MAX_KEYS> cache_entries;
 
 /**
  * @brief Counter for assigning unique IDs to preference keys.
  */
-static inline size_t next_key_id = 0;
+inline size_t next_key_id = 0;
 
 /**
  * @brief Metadata for a preference key, storing namespace and key name pointers.
@@ -106,7 +107,7 @@ struct KeyMetadata {
  *
  * Parallel array to cache_entries - same index maps to same key.
  */
-static inline std::array<KeyMetadata, MAX_KEYS> key_metadata;
+inline std::array<KeyMetadata, MAX_KEYS> key_metadata;
 
 /**
  * @brief Information about a preference, passed to forEach callbacks.
